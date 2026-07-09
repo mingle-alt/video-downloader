@@ -16,7 +16,10 @@ const QUALITY_TIERS = [2160, 1440, 1080, 720, 480, 360, 240];
 
 // Bypass YouTube's web-client bot check by impersonating app clients instead
 // (no cookies needed). Harmless no-op for non-YouTube URLs.
-const YOUTUBE_BYPASS_ARGS = ['--extractor-args', 'youtube:player_client=android,ios,web'];
+const YOUTUBE_BYPASS_ARGS = [
+  '--extractor-args',
+  'youtube:player_client=android,ios;player_skip=webpage,configs',
+];
 
 let activeDownloads = 0;
 
