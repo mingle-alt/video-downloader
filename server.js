@@ -14,6 +14,10 @@ const YTDLP_BIN = process.env.YTDLP_BIN || 'yt-dlp';
 
 const QUALITY_TIERS = [2160, 1440, 1080, 720, 480, 360, 240];
 
+// Bypass YouTube's web-client bot check by impersonating app clients instead
+// (no cookies needed). Harmless no-op for non-YouTube URLs.
+const YOUTUBE_BYPASS_ARGS = ['--extractor-args', 'youtube:player_client=android,ios,web'];
+
 let activeDownloads = 0;
 
 function isValidUrl(value) {
@@ -90,7 +94,7 @@ app.get('/api/info', async (req, res) => {
 
   try {
     const { stdout } = await runYtDlp(
-      ['-j', '--no-playlist', '--skip-download', url],
+      ['-j', '--no-playlist', '--skip-download', ...YOUTUBE_BYPASS_ARGS, url],
       { timeoutMs: 30000 }
     );
     const info = JSON.parse(stdout.trim().split('\n')[0]);
@@ -146,6 +150,7 @@ app.get('/api/download', async (req, res) => {
         '--max-filesize', MAX_FILESIZE,
         '-o', outputTemplate,
         ...formatArgs,
+        ...YOUTUBE_BYPASS_ARGS,
         url,
       ],
       { timeoutMs: DOWNLOAD_TIMEOUT_MS }
