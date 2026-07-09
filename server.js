@@ -18,7 +18,7 @@ const QUALITY_TIERS = [2160, 1440, 1080, 720, 480, 360, 240];
 // (no cookies needed). Harmless no-op for non-YouTube URLs.
 const YOUTUBE_BYPASS_ARGS = [
   '--extractor-args',
-  'youtube:player_client=android,ios;player_skip=webpage,configs',
+  'youtube:player_client=tv,tv_embedded;player_skip=webpage,configs',
 ];
 
 let activeDownloads = 0;
